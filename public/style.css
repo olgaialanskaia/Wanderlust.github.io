@@ -1,5 +1,9 @@
+.logo {
+  padding: 10px;
+}
+
 main {
-  margin: 50px auto;
+  margin: 0px auto 50px auto;
   text-align: center;
   background-image: url('https://s3.amazonaws.com/codecademy-content/courses/intermediate-javascript-requests/wanderlust/background_photo_desktop.jpg');
   background-size: cover;
@@ -7,7 +11,7 @@ main {
 }
 
 h1 {
-  padding-top: 185px;
+  padding-top: 150px;
   font-family: Montserrat;
   font-size: 64px;
   font-weight: 300;
@@ -35,11 +39,6 @@ p {
   padding-left: 5px;
 }
 
-img {
-  margin-top: 20px;
-  margin-left: 10px;
-}
-
 form {
   margin-top: 50px;
   height: 100px;
@@ -57,13 +56,14 @@ footer {
 }
 
 .container {
-  margin: 0 auto;
+  max-width: 900px;
+  margin: auto;
   visibility: hidden;
 }
 
 .weather h2 {
   font-family: Montserrat;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 0.78;
   text-align: left;
   color: #4a4a4a;
@@ -71,33 +71,29 @@ footer {
 
 .weather {
   width: 200px;
-  height: 300px;
+  height: 260px;
+  padding: 20px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  text-align: center;
 }
 
 .weathericon {
-  width: 50px;
-  height: 50px;
+  width: 150px;
+  height: 150px;
 }
 
 .venue {
-  align-content: center;
   width: 275px;
-  height: 500px;
+  padding: 20px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-.venueimg {
-  width: 200px;
-  height: 300px;
-  align-content: center;
-
+.venueimage {
+  margin-top: 20px;
 }
 
 #venues h2 {
   font-family: Work Sans;
-  font-size: 15px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 0.77;
   text-align: center;
@@ -106,17 +102,16 @@ footer {
 
 #destination {
   font-family: Montserrat;
-  font-size: 18px;
+  font-size: 30px;
   font-weight: 600;
   letter-spacing: 0.9px;
   text-align: left;
   color: #27b7c1;
-  padding-left: 60px;
 }
 
 .sectiontitle {
   height: 70px;
-  width: 500px;
+  width: 300px;
   align-items: center;
 }
 
@@ -127,14 +122,12 @@ footer {
   letter-spacing: 3.4px;
   text-align: left;
   color: #4a4a4a;
-  padding-left: 60px;
 }
 
 #venues {
   display: flex;
   justify-content: space-around;
-  min-height: 500px;
-  padding: 0 60px;
+  min-height: 250px;
 }
 
 #weather {
@@ -175,8 +168,18 @@ footer {
 @media (max-width: 860px) {
   main {
     background-image: url('https://s3.amazonaws.com/codecademy-content/courses/intermediate-javascript-requests/wanderlust/background_photo_moble.jpg');
-    height: 500px;
   }
+
+  h1 {
+    padding-top: 80px;
+    font-size: 32px;
+  }
+
+  form {
+    margin-top: 30px;
+    padding-bottom: 10px;
+  }
+
   #venues, #weather {
     display: flex;
     flex-direction: column;
@@ -186,8 +189,13 @@ footer {
     margin: 10px auto;
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 80%;
     align-items: center;
+  }
+
+  .weather {
+    padding: 10px 20px;
+    height: 100%;
   }
 
   .sectiontitle, .sectiontitle h2, #destination {

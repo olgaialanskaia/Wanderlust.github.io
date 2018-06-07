@@ -2,7 +2,6 @@
 const clientId = 'X300CL4Y4M1F3QT1AAOSQPX4PTEIIRQIEV40Z04EHJVULQ3Y';
 const clientSecret = 'PAYRGKI4BBCH5UCET0JJGDH2YENOV3CDNWNDNB20Y4CXS1BQ';
 const url = 'https://api.foursquare.com/v2/venues/explore?near=';
-const imgPrefix = 'https://igx.4sqi.net/img/general/150x200';
 
 // APIXU Info
 const apiKey = '8403fec3c61c4b428b0145310180501';
@@ -13,79 +12,65 @@ const $input = $('#city');
 const $submit = $('#button');
 const $destination = $('#destination');
 const $container = $('.container');
-const $venueDivs = [$("#venue1"), $("#venue2"), $("#venue3"), $("#venue4"), $("#venue5"), $("#venue6"), $("#venue7"), $("#venue8"), $("#venue9"), $("#venue10")];
-const $weatherDivs = [$("#weather1"), $("#weather2"), $("#weather3"), $("#weather4"), $("#weather5"), $("#weather6"), $("#weather7")];
-const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const $venueDivs = [$("#venue1"), $("#venue2"), $("#venue3"), $("#venue4")];
+const $weatherDivs = [$("#weather1"), $("#weather2"), $("#weather3"), $("#weather4")];
+const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-// AJAX functions
-async function getVenues() {
-  const city = $input.val();
-  const urlToFetch = url + city + '&venuePhotos=1&limit=10&client_id=' + clientId + '&client_secret=' + clientSecret + '&v=20170305';
+// Add AJAX functions here:
+const getVenues = async () => {
+	const city = $input.val();
+  const urlToFetch = `${url}${city}&limit=10&client_id=${clientId}&client_secret=${clientSecret}&v=20180101`;
   try {
-    let response = await fetch(urlToFetch);
+    const response = await fetch(urlToFetch);
     if(response.ok) {
-      let jsonResponse = await response.json();
-      console.log(jsonResponse);
-      let venues = jsonResponse.response.groups[0].items.map(location => location.venue);
-      console.log(venues);
+      const jsonResponse = await response.json();
+      const venues = jsonResponse.response.groups[0].items.map(location => location.venue);
       return venues;
     }
-    throw new Error('Venue request failed!');
-  } catch (error) {
+  }
+
+  catch (error) {
     console.log(error);
   }
 }
 
-async function getForecast() {
-  const urlToFetch = forecastUrl + apiKey + '&q=' + $input.val() + '&days=7';
+const getForecast = async () => {
+  const urlToFetch = `${forecastUrl}${apiKey}&q=${$input.val()}&days=4&hour=11`;
   try {
-    let response = await fetch(urlToFetch);
-    if(response.ok) {
-      let jsonResponse = await response.json();
-      console.log(jsonResponse);
-      let days = jsonResponse.forecast.forecastday;
-      console.log(days);
+    const response = await fetch(urlToFetch);
+    if (response.ok) {
+      const jsonResponse = await response.json();
+      const days = jsonResponse.forecast.forecastday;
       return days;
     }
-    throw new Error('Forecast request failed!');
-  } catch (error) {
+  }
+
+  catch (error) {
     console.log(error);
   }
 }
 
 // Render functions
-function renderVenues(venues) {
+const renderVenues = (venues) => {
   $venueDivs.forEach(($venue, index) => {
-    let venueContent =
-      '<h2>' + venues[index].name + '</h2>' +
-      '<p> Rating: ' + venues[index].rating + '</p>' +
-      '<img class="venueimage" src="' + imgPrefix +
-      venues[index].photos.groups[0].items[0].suffix + '"/>' +
-      '<h3>Address:</h3>' +
-      '<p>' + venues[index].location.address + '</p>' +
-      '<p>' + venues[index].location.city + '</p>' +
-      '<p>' + venues[index].location.country + '</p>';
+    const venue = venues[index];
+    const venueIcon = venue.categories[0].icon;
+    const venueImgSrc = `${venueIcon.prefix}bg_64${venueIcon.suffix}`;
+    let venueContent = createVenueHTML(venue.name, venue.location, venueImgSrc);
     $venue.append(venueContent);
   });
-  $destination.append('<h2>' + venues[0].location.city + '</h2>');
+  $destination.append(`<h2>${venues[0].location.city}</h2>`);
 }
 
-function renderForecast(days) {
+const renderForecast = (days) => {
   $weatherDivs.forEach(($day, index) => {
-    let weatherContent =
-       '<h2> Sunrise: ' + days[index].astro.sunrise +
-       '<h2> High: ' + days[index].day.maxtemp_f +
-      '</h2>' + '<h2> Low: ' + days[index].day.mintemp_f +
-      '</h2>' + '<h2> Total Precipitation: ' + days[index].day.totalprecip_in +
-      '</h2>' + '<img src="http://' +  days[index].day.condition.icon + '" class="weathericon" />' +
-      '<h2> Sunset: ' + days[index].astro.sunset +
-      '<h2> Humidity: ' + days[index].day.avghumidity +
-      '<h2>' + weekDays[(new Date(days[index].date)).getDay()] + '</h2>';
+    const currentDays = days[index];
+		let weatherContent = createWeatherHTML(currentDays);
     $day.append(weatherContent);
   });
 }
 
-function executeSearch() {
+const executeSearch = () => {
   $venueDivs.forEach(venue => venue.empty());
   $weatherDivs.forEach(day => day.empty());
   $destination.empty();
